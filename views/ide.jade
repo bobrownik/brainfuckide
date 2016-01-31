@@ -1,0 +1,108 @@
+extends layout
+
+block content
+  container
+      header.codrops-header
+        h1 Brainfuck IDE
+      nav#bt-menu.bt-menu
+        a.bt-menu-trigger(href='#')
+          span Menu
+        ul
+          li
+            span(Title="Debug Mode")
+              a.bt-icon.icon-browser.debug-ref()
+          li
+            span(Title="Exit")
+              a.mif-exit(href='/signout')
+          li
+            span(Title="Refresh")
+              a.bt-icon.icon-refresh()
+          li
+            span(Title="Sign Out")
+              a.bt-icon.icon-home(href='/signout')
+        ul
+          li
+            span(Title="Create File")
+              a.bt-icon.icon-file-add(onclick="showDialog('#dialog')")
+          li
+            span(Title="Input")
+              a.bt-icon.icon-newspaper(onclick="showDialog('#dialog1')")
+          li
+            span(Title="Rename File")
+              a.bt-icon.icon-email(onclick="showDialog('#dialog2')")
+          li
+            span(Title="Save File")
+              a.bt-icon.icon-cd(onclick="showDialog('#dialog3')")
+          li
+            span(Title="Delete File")
+              a.bt-icon.icon-trash(onclick="showDialog('#dialog4')")
+      .filemanager
+        h3 Files:
+        ul.data.animated
+          li.files
+            a(href='#')
+              span.icon.file.f-jpg file
+              span.name
+        .nothingfound(style='display: none;')
+          .nofiles
+            span No files.
+      .page
+        .workspace
+          h4 Program code:
+          textarea#txt_source.light(wrap='virtual', rows='20', cols='60')
+          h4 Input:
+          textarea#txt_input.light(wrap='virtual', rows='4', cols='60')
+          h4 Output:
+          textarea#txt_output.dark(wrap='virtual', readonly='', rows='4', cols='60')
+          br
+          br
+          input#btn_run(type='button', value='Run', onclick='cmd_run();')
+        #debugger
+          h4 Controls:
+          input#btn_run(type='button', value='Run Debug', onclick='cmd_run();')
+          input#btn_step(type='button', value='Step', onclick='cmd_step();')
+          input#btn_kill(type='button', value='Kill', onclick='cmd_kill();', disabled='')
+          h4 Run speed:
+          input#btn_speed0(type='button', value='Slow', onclick='cmd_speed(0);')
+          input#btn_speed1(type='button', value='Med', onclick='cmd_speed(1);')
+          input#btn_speed2(type='button', value='Fast', onclick='cmd_speed(2);')
+          .input-control.text
+            input#txt_status(type='text', disabled='', value='Status: Idle', size='14')
+          h4 Memory state:
+          textarea#txt_memory.dark(wrap='off', readonly='', rows='4', cols='70')
+          h4 Program location:
+          textarea#txt_progpos.dark(wrap='off', readonly='', rows='2', cols='70')
+          h4 Input inspector:
+          textarea#txt_input_insp.dark(wrap='off', readonly='', rows='3', cols='70')
+          h4 Output inspector:
+          textarea#txt_output_insp.dark(wrap='off', readonly='', rows='4', cols='70')
+          h4 Options:
+          h5 Memory limit:
+          .input-control.text
+            input#txt_memlim(type='text', size='7')
+          label.input-control.checkbox
+            input#chk_memwrap(type='checkbox')
+            span.check
+            span.caption Wrap memory
+          br
+          label.input-control.checkbox
+            input#chk_iosym(type='checkbox')
+            span.check
+            span.caption Use _ and ^ instead of , and . for input and output.
+          input#btn_swap_iosym(type='button', value='Swap', onclick='cmd_swap_iosym();')
+          h4 Help:
+          h5
+            | Use # to add a breakpoint.
+            br
+            |           Leave input field blank if you want it to prompt.
+            br
+            |           For prompt, use 3 digits for a decimal char code, 2 digits for hex.
+            br
+            |           My I/O symbols allow comments to have punctuation.
+            br
+           #dialog.padding20.no-padding-right(data-role='dialog', data-close-button='true', data-width='350', data-height='200')
+             h3 Create File
+             input.form-control(type='text', name='File Name', placeholder='File Name')
+             button.button.success.block-shadow-success.text-shadow  Create File
+        .clearfix
+      .clearfix

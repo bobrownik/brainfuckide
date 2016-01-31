@@ -1,0 +1,29 @@
+{
+  "name": "brainfuckide",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "paistitshare <paistitshare@gmail.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "brainfuck",
+    "ide"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.4.9",
+    "jquery": "~2.2.0",
+    "metro": "~3.0.13"
+  }
+}

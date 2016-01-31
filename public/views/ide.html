@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="brainfuckApp">
+	<head>
+	<title>Brainfuck IDE</title>
+		<link rel="stylesheet" type="text/css" href="../../bower_components/metro/build/css/metro.min.css">
+		<link rel="stylesheet" type="text/css" href="../../bower_components/metro/build/css/metro-icons.min.css">
+		<link rel="stylesheet" type="text/css" href="../../bower_components/metro/build/css/metro-schemes.min.css">
+		<link rel="stylesheet" type="text/css" href="../../bower_components/metro/build/css/metro-responsive.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="../css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="../css/icons.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<script src="../js/modernizr.custom.js"></script>
+		<script language="Javascript" src="../../bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="../../bower_components/metro/build/js/metro.min.js"></script>
+		<script src="../../bower_components/angular/angular.min.js"></script>
+		<script language="Javascript" src="../js/brf.js"></script>
+	</head>
+<body>
+<div class="container">
+	<div data-role="dialog" id="dialog" class="padding20 no-padding-right " data-close-button="true" data-width="350" data-height="200">
+		<h3>Create File</h3>
+		<input type="text" name="File Name" class="form-control" placeholder="File Name">
+		<button class="button success block-shadow-success text-shadow"> Create File </button>
+	</div>
+    <header class="codrops-header">
+    	<h1>Brainfuck IDE</h1>
+    </header>
+	<nav id="bt-menu" class="bt-menu">
+		<a href="#" class="bt-menu-trigger"><span>Menu</span></a>
+		<ul>
+			<li><a href="" class="bt-icon icon-browser debug-ref">Debug Mode</a></li>
+			<li><a href="" class="mif-exit">Exit</a></li>
+			<li><a href="" class="bt-icon icon-refresh">Refresh</a></li>
+			<li><a href="/signout" class="bt-icon icon-home">Sign Out</a></li>
+		</ul>
+		<ul>
+			<li><span title="Create File"><a onclick="showDialog('#dialog')" class="bt-icon icon-file-add"></a></span></li>
+			<li><a href="" class="bt-icon icon-newspaper">Edit File</a></li>
+			<li><a href="" class="bt-icon icon-email">Rename File</a></li>
+			<li><a href="" class="bt-icon icon-cd">Save File</a></li>
+			<li><a href="" class="bt-icon icon-trash">Delete File</a></li>
+		</ul>
+	</nav>
+<div class="filemanager">
+	<h3>Files: </h3>
+	<ul class="data animated">
+		<li class="files">
+			<a href="#">
+				<span class="icon file f-jpg">file</span>
+				<span class="name"></span>
+			</a>
+		</li>
+	</ul>
+	<div class="nothingfound" style="display: none;">
+		<div class="nofiles">
+			<span>No files.</span>
+		</div>
+	</div>
+</div>
+
+<div class="page" ng-controller="brainfuckController">
+	<div class="workspace">
+			<h4>File code:</h4>
+			<textarea ng-model="code" wrap="virtual" class="light" rows="20" cols="60"></textarea>
+			<h4>Output:</h4>
+			<textarea ng-model="output_text" wrap="virtual" readonly class="dark" rows="4" cols="60"></textarea>
+			<br>
+			<br>
+			<input type="button" value="Run" ng-click="run()">
+	</div>
+	<div id="debugger">
+		<div class="debug-main">
+			<h4>Controls:</h4>
+			<input type="button" value="Run Debug" onclick="cmd_run();" id="btn_run">
+			<input type="button" value="Step" onclick="cmd_step();" id="btn_step">
+			<input type="button" value="Kill" onclick="cmd_kill();" disabled id="btn_kill">
+			<h4>Run speed:</h4>
+			<input type="button" value="Slow" onclick="cmd_speed(0);" id="btn_speed0">
+			<input type="button" value="Med" onclick="cmd_speed(1);" id="btn_speed1">
+			<input type="button" value="Fast" onclick="cmd_speed(2);" id="btn_speed2">
+			<div class="input-control text">
+				<input type="text" disabled value="Status: Idle" size=14 id="txt_status">
+			</div>
+			<h4>Memory state:</h4>
+			<textarea id="txt_memory" wrap="off" readonly class="dark" rows="4" cols="70"></textarea>
+			<h4>Help:</h4>
+			<h5>Use # to add a breakpoint.<br/>
+			For prompt, use 3 digits for a decimal char code, 2 digits for hex.<br/>
+			</h5>
+		</div>
+		<div class="debug-memory">
+			<div id="memory">
+				<div class="memory-cell" ng-repeat="cell in memory">
+					<span>#{{$index}} value: {{String.fromCharCode(cell)}}</span>
+					<input type="number" min="0" max="255" name="" value="{{cell}}" placeholder="">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<div class="clearfix"></div>
+
+</div>
+	<script src="../js/script.js" type="text/javascript" charset="utf-8" async defer></script>
+	<script src="../js/classie.js"></script>
+	<script src="../js/borderMenu.js"></script>
+</body>
+</html>

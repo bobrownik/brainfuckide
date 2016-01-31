@@ -1,0 +1,26 @@
+extends layout
+
+block content
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          a.navbar-brand.navbar-center(href='#') Brainfuck IDE
+        #navbar.navbar-collapse.collapse.navbar-right
+          ul.nav.navbar-nav
+            li
+              a(href='/signup')
+                h5 Sign up
+        .clearfix
+    .container
+      .row
+        .col-sm-6.col-md-4.col-md-offset-4
+          .account.text-center
+            form.form-signin(action='/login', method='POST')
+              input.form-control(type='text', name='username', placeholder='Login', required='', autofocus='')
+              input.form-control(type='password', name='password', placeholder='Password', required='')
+              button.btn.btn-success(type='submit') Sign in
+              span.clearfix
+          #message
+          h1.text-center.error-message #{message}
+block scripts
+  link(rel='stylesheet', href='/metro-bootstrap/dist/css/metro-bootstrap.min.css')

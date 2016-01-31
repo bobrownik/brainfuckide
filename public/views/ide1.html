@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<title>Brainfuck IDE</title>
+		<link rel="stylesheet" type="text/css" href="../../bower_components/metro/build/css/metro.min.css">
+		<link rel="stylesheet" type="text/css" href="../../bower_components/metro/build/css/metro-icons.min.css">
+		<link rel="stylesheet" type="text/css" href="../../bower_components/metro/build/css/metro-schemes.min.css">
+		<link rel="stylesheet" type="text/css" href="../../bower_components/metro/build/css/metro-responsive.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="../css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="../css/icons.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css">
+		<script src="../js/modernizr.custom.js"></script>
+		<script language="Javascript" src="../../bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="../../bower_components/metro/build/js/metro.min.js"></script>
+		<script language="Javascript" src="../js/interpreter.js"></script>
+	</head>
+<body>
+<div class="container">
+<div data-role="dialog" id="dialog" class="padding20 no-padding-right " data-close-button="true" data-width="350" data-height="200">
+		<h3>Create File</h3>
+		<input type="text" name="File Name" class="form-control" placeholder="File Name">
+		<button class="button success block-shadow-success text-shadow"> Create File </button>
+	</div>
+    <header class="codrops-header">
+    	<h1>Brainfuck IDE</h1>
+    </header>
+	<nav id="bt-menu" class="bt-menu">
+		<a href="#" class="bt-menu-trigger"><span>Menu</span></a>
+		<ul>
+			<li><a href="" class="bt-icon icon-browser debug-ref">Debug Mode</a></li>
+			<li><a href="" class="mif-exit">Exit</a></li>
+			<li><a href="" class="bt-icon icon-refresh">Refresh</a></li>
+			<li><a href="/signout" class="bt-icon icon-home">Sign Out</a></li>
+		</ul>
+		<ul>
+			<li><span title="Create File"><a onclick="showDialog('#dialog')" class="bt-icon icon-file-add"></span></a></li>
+			<li><a href="" class="bt-icon icon-newspaper">Edit File</a></li>
+			<li><a href="" class="bt-icon icon-email">Rename File</a></li>
+			<li><a href="" class="bt-icon icon-cd">Save File</a></li>
+			<li><a href="" class="bt-icon icon-trash">Delete File</a></li>
+		</ul>
+	</nav>
+<div class="filemanager">
+	<h3>Files: </h3>
+	<ul class="data animated">
+		<li class="files">
+			<a href="#">
+				<span class="icon file f-jpg">file</span>
+				<span class="name"></span>
+			</a>
+		</li>
+	</ul>
+	<div class="nothingfound" style="display: none;">
+		<div class="nofiles">
+			<span>No files.</span>
+		</div>
+	</div>
+</div>
+
+<div class="page">
+
+	<div class="workspace">
+			<h4>Program code:</h4>
+			<textarea id="txt_source" wrap="virtual" class="light" rows="20" cols="60"></textarea>
+			<h4>Input:</h4>
+			<textarea id="txt_input" wrap="virtual" class="light" rows="4" cols="60"></textarea>
+			<h4>Output:</h4>
+			<textarea id="txt_output" wrap="virtual" readonly class="dark" rows="4" cols="60"></textarea>
+			<br>
+			<br>
+			<input type="button" value="Run" onclick="cmd_run();" id="btn_run">
+	</div>
+	<div id="debugger">
+			<h4>Controls:</h4>
+			<input type="button" value="Run Debug" onclick="cmd_run();" id="btn_run">
+			<input type="button" value="Step" onclick="cmd_step();" id="btn_step">
+			<input type="button" value="Kill" onclick="cmd_kill();" disabled id="btn_kill">
+			<h4>Run speed:</h4>
+			<input type="button" value="Slow" onclick="cmd_speed(0);" id="btn_speed0">
+			<input type="button" value="Med" onclick="cmd_speed(1);" id="btn_speed1">
+			<input type="button" value="Fast" onclick="cmd_speed(2);" id="btn_speed2">
+			<div class="input-control text">
+				<input type="text" disabled value="Status: Idle" size=14 id="txt_status">
+			</div>
+			<h4>Memory state:</h4>
+			<textarea id="txt_memory" wrap="off" readonly class="dark" rows="4" cols="70"></textarea>
+			<h4>Program location:</h4>
+			<textarea id="txt_progpos" wrap="off" readonly class="dark" rows="2" cols="70"></textarea>
+			<h4>Input inspector:</h4>
+			<textarea id="txt_input_insp" wrap="off" readonly class="dark" rows="3" cols="70"></textarea>
+			<h4>Output inspector:</h4>
+			<textarea id="txt_output_insp" wrap="off" readonly class="dark" rows="4" cols="70"></textarea>
+			<h4>Options:</h4>
+			<h5>Memory limit:</h5>
+			<div class="input-control text">
+				<input type="text" size=7 id="txt_memlim">
+			</div>
+			<label class="input-control checkbox">
+                            <input type=checkbox id="chk_memwrap">
+                            <span class="check"></span>
+                            <span class="caption">Wrap memory</span>
+                        </label> <br>
+			<label class="input-control checkbox">
+                            <input type=checkbox id="chk_iosym">
+                            <span class="check"></span>
+                            <span class="caption">Use _ and ^ instead of , and . for input and output.</span>
+            </label>
+			<input type="button" value="Swap" onclick="cmd_swap_iosym();" id="btn_swap_iosym">
+
+			<h4>Help:</h4>
+			<h5>Use # to add a breakpoint.<br/>
+			Leave input field blank if you want it to prompt. <br/>
+			For prompt, use 3 digits for a decimal char code, 2 digits for hex.<br/>
+			My I/O symbols allow comments to have punctuation.<br/>
+			</h5>
+	</div>
+	<div class="clearfix"></div>
+</div>
+
+<div class="clearfix"></div>
+
+</div>
+</body>
+	<script src="../js/script.js" type="text/javascript" charset="utf-8" async defer></script>
+	<script src="../js/classie.js"></script>
+	<script src="../js/borderMenu.js"></script>
+</html>
