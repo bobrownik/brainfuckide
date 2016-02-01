@@ -17,36 +17,36 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
 
     $scope.Command = {};
 
-$scope.Command['>'] = function($scope) {
-    $scope.memoryPointer++;
-    if($scope.memory.length==$scope.memoryPointer)
-        $scope.memory[$scope.memoryPointer]=0;
-}
-$scope.Command['<'] = function($scope) {
-    $scope.memoryPointer--;
-    if($scope.memoryPointer<0) $scope.error("negative memory index");
-}
-$scope.Command['+'] = function($scope) {
-    if($scope.memory[$scope.memoryPointer]<255)
-        $scope.memory[$scope.memoryPointer]+=1;
-    else  $scope.memory[$scope.memoryPointer]=0;
-}
-$scope.Command['-'] = function($scope) {
-    if($scope.memory[$scope.memoryPointer]>0)
-        $scope.memory[$scope.memoryPointer]-=1;
-    else  $scope.memory[$scope.memoryPointer]=255;
-}
-$scope.Command[','] = function($scope) {
-    $scope.memory[$scope.memoryPointer]=$scope.input();
-}
+    $scope.Command['>'] = function($scope) {
+        $scope.memoryPointer++;
+        if($scope.memory.length==$scope.memoryPointer)
+            $scope.memory[$scope.memoryPointer]=0;
+    }
+    $scope.Command['<'] = function($scope) {
+        $scope.memoryPointer--;
+        if($scope.memoryPointer<0) $scope.error("negative memory index");
+    }
+    $scope.Command['+'] = function($scope) {
+        if($scope.memory[$scope.memoryPointer]<255)
+            $scope.memory[$scope.memoryPointer]+=1;
+        else  $scope.memory[$scope.memoryPointer]=0;
+    }
+    $scope.Command['-'] = function($scope) {
+        if($scope.memory[$scope.memoryPointer]>0)
+            $scope.memory[$scope.memoryPointer]-=1;
+        else  $scope.memory[$scope.memoryPointer]=255;
+    }
+    $scope.Command[','] = function($scope) {
+        $scope.memory[$scope.memoryPointer]=$scope.input();
+    }
 
-$scope.Command['.'] = function($scope) {
-    $scope.output($scope.memory[$scope.memoryPointer]);
-}
+    $scope.Command['.'] = function($scope) {
+        $scope.output($scope.memory[$scope.memoryPointer]);
+    }
 
-$scope.Command['['] = function($scope) {
-    if ($scope.memory[$scope.memoryPointer] == 0) $scope.to_loop_end();
-}
+    $scope.Command['['] = function($scope) {
+        if ($scope.memory[$scope.memoryPointer] == 0) $scope.to_loop_end();
+    }
     $scope.Command[']'] = function($scope) {
         if ($scope.memory[$scope.memoryPointer] > 0)
             $scope.to_loop_start();
@@ -85,6 +85,10 @@ $scope.Command['['] = function($scope) {
     }
 
     $scope.execute = function(){
+        if(!this.Command[this.code[this.codePointer]]){
+            alert(this.code[this.codePointer]);
+            this.error('unexpected symbol');
+        }
         this.Command[this.code[this.codePointer]]($scope);
     }
 
@@ -104,7 +108,7 @@ $scope.Command['['] = function($scope) {
         }
     }
     $scope.error = function(message){
-        alert();
+        alert(message);
         this.reset();
     }
     $scope.input = function() {

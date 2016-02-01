@@ -91,7 +91,7 @@
 		</div>
 		<div class="debug-memory">
 			<div id="memory">
-				<div class="memory-cell" ng-repeat="cell in memory">
+				<div class="memory-cell" ng-repeat="cell in memory track by $index">
 					<span>#{{$index}} value: {{String.fromCharCode(cell)}}</span>
 					<input type="number" min="0" max="255" name="" value="{{cell}}" placeholder="">
 				</div>
