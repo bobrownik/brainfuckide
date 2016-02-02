@@ -91,10 +91,8 @@ block content
             #memory
               h4 Memory state:
               .memory-cell(ng-repeat='cell in memory track by $index')
-                .memory-cell-index
-                  span {{$index}} value:
-                .memory-cell-value
-                  input(type='number', ng-if='$index!=memoryPointer', min='0', max='255', name='', ng-model='memory[$index];', placeholder='')
-                  input.qwer(type='number', ng-if='$index==memoryPointer', min='0', max='255', name='', ng-model='memory[$index];', placeholder='')
+                span.ind {{$index}} value:
+                input(type='number', ng-if='$index!=memoryPointer', min='0', max='255', name='', ng-model='memory[$index];', placeholder='')
+                input.qwer(type='number', ng-if='$index==memoryPointer', min='0', max='255', name='', ng-model='memory[$index];', placeholder='')
         .clearfix
       .clearfix
