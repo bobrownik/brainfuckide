@@ -43,15 +43,18 @@ module.exports = function(passport){
 	});
 
 	router.post('/saveFile', isAuthenticated, function(req, res){
-		var file = new File({
-	    	name: req.body.name,
-	    	content: req.body.content,
-	    	username: req.user.username
+		// var file = new File({
+	 //    	name: req.body.name,
+	 //    	content: req.body.content,
+	 //    	username: req.user.username
+	 //  	});
+	  	File.findOne({username: req.user.username,	name: req.body.name}, function(err, file){
+  			file.content = req.body.content;
+  			file.save(function(err, result){
+  				if (err) throw err;
+  				res.send(result);
+  			});
 	  	});
-	  	file.save(function(err, result) {
-		if (err) throw err;
-			res.send(result);
-		});
 	});
 
 	router.get('/signout', function(req, res) {
@@ -60,15 +63,21 @@ module.exports = function(passport){
 	});
 
 	router.post('/createfile', isAuthenticated, function(req, res, next) {
-	 	var file = new File({
-	    	name: req.body.name,
-	    	content: '',
-	    	username: req.user.username
-	  	});
-	  	file.save(function(err, result) {
-		if (err) throw err;
-			res.send(result);
+		File.find({username: req.user.username,	name: req.body.name}, function(err, rslt){
+			if (rslt.length) res.send("exists");
+			else {
+				var file = new File({
+			    	name: req.body.name,
+			    	content: '',
+			    	username: req.user.username
+		  		});
+			  	file.save(function(err, result) {
+				if (err) throw err;
+					res.send(result);
+				});
+			}
 		});
+
 	});
 
 	router.post('/refreshcontent', function(req, res) {
@@ -82,13 +91,16 @@ module.exports = function(passport){
 	});
 
 	router.get('/filecontent', function(req, res) {
+		console.log(req.query);
+		console.log(req.query.name + "\n" + req.user.username);
 	  	File.findOne({
-	  	  username: req.user.username,
-	      name: req.body.name
+	  		name: req.query.name,
+	  		username: req.user.username
 	    },
 	    function(err, result) {
-	      if (err) throw err;
-	      res.send(result);
+	    	console.log(result);
+	    	if (err) throw err;
+	    	res.send(result);
 	    });
 	});
 

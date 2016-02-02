@@ -197,7 +197,7 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
         if($('.f-jpg').length) {
         $http({
                 method: 'POST',
-                data: {name: $('.f-jpg').siblings('.name').text(), content: $('#code').text()},
+                data: {name: $('.f-jpg').siblings('.name').text(), content: $.trim($('#code').val())},
                 url: '/savefile'
             }).then(function successCallback(response) {
                 console.clear();
@@ -221,16 +221,19 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
         }
     }
     $scope.deleteFile = function(){
-        $http({
-            method: 'POST',
-            data: {name: $('#deleteFileName').val()},
-            url: '/deletefile'
-        }).then(function successCallback(response) {
-            console.clear();
-            console.log(response);
-            location.reload();
-        }, function errorCallback(response) {
-        });
+        alert($('.f-jpg').siblings('.name').text());
+        if($('.f-jpg').length) {
+            $http({
+                method: 'POST',
+                data: {name: $('.f-jpg').siblings('.name').text()},
+                url: '/deletefile'
+            }).then(function successCallback(response) {
+                console.clear();
+                console.log(response);
+                location.reload();
+            }, function errorCallback(response) {
+            });
+        }
     }
     $scope.refresh = function(){
         location.reload();

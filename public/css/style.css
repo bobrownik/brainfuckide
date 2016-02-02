@@ -1,9 +1,25 @@
+input[type=button] {
+	margin: 5px;
+}
+input[type=range] {
+	margin: 5px;
+}
+input[type=text] {
+	margin: 5px;
+}
+textarea {
+	margin: 5px;
+}
 .ind {
 	width: 75px;
 	display: inline-block;
 }
 .qwer {
 	background-color:  #6a6a72;
+}
+#memory > h4 {
+	display: inline-block;
+	width: 150px;
 }
 #run-status {
 	margin-top: 20px;
@@ -23,6 +39,21 @@
 	height: 500px;
 	overflow-y: scroll;
 }
+#memory::-webkit-scrollbar {
+	width: 9px;
+	height: 9px;
+}
+#memory::-webkit-scrollbar-track{
+    background: #ececec;
+}
+
+#memory::-webkit-scrollbar-thumb{
+    background: #bebebe;
+}
+.login-title {
+	margin-top: 100px;
+	margin-bottom: 40px;
+}
 .debug-main {
 	float: left;
 	margin-right: 40px;
@@ -39,9 +70,6 @@
 .navbar-brand {
 	margin-left: 115px !important;
 	float:none;
-}
-.signup {
-	margin-top: 120px;
 }
 .account {
   margin-top: 120px;

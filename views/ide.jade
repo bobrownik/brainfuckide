@@ -12,11 +12,6 @@ block content
         .input-control.text
           input#renameFileName.form-control(type='text', name='New File Name', placeholder='New file bame')
         button.button.success.block-shadow-success.text-shadow(ng-click='renameFile()')  Rename
-      #dialog3.padding20.no-padding-right(data-role='dialog', data-close-button='true', data-width='350', data-height='200')
-        h3 Delete File
-        .input-control.text
-          input#deleteFileName.form-control(type='text', name='File Name', placeholder='File name')
-        button.button.success.block-shadow-success.text-shadow(ng-click='deleteFile()')  Delete
       header.codrops-header
         h1 Brainfuck IDE
       nav#bt-menu.bt-menu
@@ -44,7 +39,7 @@ block content
               a.bt-icon.icon-cd(ng-click='saveFile()')
           li
             span(title='Delete File')
-              a.bt-icon.icon-trash(onclick="showDialog('#dialog3')")
+              a.bt-icon.icon-trash(ng-click="deleteFile()")
       .filemanager
         h3 Files:
         ul.data.animated
@@ -87,7 +82,7 @@ block content
             input#btn_stop(type='button', value='Stop', ng-disabled='!isDebuging||atBereakPoint' ng-click='atBereakPoint = true')
             h4 Run speed:
             .input-control.range.big-input
-              input(type='range', min='10', max='1000', ng-model='pause_time')
+              input(type='range', min='50', max='1000', ng-model='pause_time')
             br
             #run-status.input-control.text
               input#txt_status(type='text', disabled='', ng-if='!isRunning&&!isDebuging', value='Status: noRun', size='14')

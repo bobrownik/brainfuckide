@@ -1,16 +1,16 @@
 
 $('.files > a').click(function(){
-    alert('click function');
     $('span.icon').removeClass('f-jpg').addClass('f-doc');
     $(this).children('.icon').addClass('f-jpg');
     $.ajax({
         method: 'GET',
-        data: {name: $(this).text().replace(/\s+/g, '')},
-        url: '/filecontent'
-    }).done(function(response) {
-        console.log(JSON.stringify(response));
-           $('#code').html(response.content);
+        data: {name: $(this).text()},
+        url: '/filecontent',
+        success: function(response) {
+           $('#code').val(response.content.replace(/\s{2,10}/g, ' '));
+       }
     });
+
     // $http({
     //     method: 'GET',
     //     data: {name: $(this).text().replace(/\s+/g, '')},
