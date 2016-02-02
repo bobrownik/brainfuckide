@@ -7,9 +7,8 @@ angular.module('brainfuckApp', [])
 angular.module('brainfuckApp').controller('brainfuckController', function($scope, $http ,$timeout, $interval) {
 
         $scope.memory = new Array();
-        $scope.memory[0]=0;
-        $scope.memoryPointer = 0;
-        $scope.codePointer = 0;
+        $scope.memoryPointer = -1;
+        $scope.codePointer = -1;
         $scope.code = "++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.";
         $scope.isDebuging = false;
         $scope.isRunning = false;
@@ -58,11 +57,10 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
         $scope.Command['#'] = function($scope) {
 
         }
-
         $scope.reset = function () {
             this.memory = new Array();
-            this.memoryPointer = 0;
-            this.codePointer = 0;
+            this.memoryPointer = -1;
+            this.codePointer = -1;
             this.isDebuging = false;
             this.isRunning = false;
             this.atBereakPoint = false;
@@ -92,8 +90,7 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
 
         $scope.execute = function(){
             if(!this.Command[this.code[this.codePointer]]){
-                alert(this.code[this.codePointer]);
-                this.error('unexpected symbol');
+                 this.error('unexpected symbol '+ this.code[this.codePointer]);
             }
             this.Command[this.code[this.codePointer]]($scope);
         }
@@ -102,13 +99,15 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
             this.execute();
             this.codePointer+=1;
             if (!this.code[this.codePointer]) {
-                this.isRunning=false;
-                this.isDebuging=false;
+                this.output_text += '\n---------------\n';
+                this.reset();
             }
         }
         $scope.run=function(){
             if(!this.isRunning||!this.isDebuging){
                 this.reset();
+                this.memoryPointer=0;
+                this.codePointer=0;
                 this.memory[0]=0;
                 this.isRunning = true;
                 this.run_next();
@@ -118,14 +117,14 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
             this.step();
             var scope = this;
             if(this.isRunning)
-                $timeout(function(){scope.run_next();}, this.pause_time);
+                $timeout(function(){scope.run_next();}, 1005-this.pause_time);
         }
 
         $scope.debug_next = function(){
             this.debug_step();
             var scope = this;
             if(this.isDebuging && !this.atBereakPoint)
-                $timeout(function(){scope.debug_next();}, this.pause_time);
+                $timeout(function(){scope.debug_next();}, 1005-this.pause_time);
         }
 
         $scope.run_step = function() {
@@ -138,6 +137,8 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
                 this.atBereakPoint=false;
                 if(!this.isDebuging) {
                     this.reset();
+                    this.memoryPointer=0;
+                    this.codePointer=0;
                     this.memory[0]=0;
                     this.isDebuging = true;
                 }
@@ -167,7 +168,7 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
             this.codePointer+=1;
             if(this.code[this.codePointer]=='#') this.atBereakPoint = true;
             if(!this.code[this.codePointer]) {
-                this.isRunning=false;
+                this.output_text += '\n---------------\n';
                 this.isDebuging=false;
             }
         }
