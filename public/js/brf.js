@@ -115,12 +115,24 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
             }
         }
         $scope.run_next = function(){
-                this.step();
-                var scope = this;
-                if(this.isRunning)
-                    $timeout(function(){scope.run_next();}, this.pause_time);
+            this.step();
+            var scope = this;
+            if(this.isRunning)
+                $timeout(function(){scope.run_next();}, this.pause_time);
         }
 
+        $scope.debug_next = function(){
+            this.debug_step();
+            var scope = this;
+            if(this.isDebuging && !this.atBereakPoint)
+                $timeout(function(){scope.debug_next();}, this.pause_time);
+        }
+
+        $scope.run_step = function() {
+            if(this.isDebuging)
+                this.step();
+        }
+        
         $scope.run_to_breakpoint = function(){
             if(!this.isRunning){
                 this.atBereakPoint=false;
@@ -130,12 +142,8 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
                     this.isDebuging = true;
                 }
                 this.atBereakPoint=false;
-                while(this.isDebuging && !this.atBereakPoint){
-
-                    this.debug_step();
-                }
+                this.debug_next();
             }
-
         }
         $scope.error = function(message){
             alert(message);
@@ -163,12 +171,15 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
                 this.isDebuging=false;
             }
         }
+
+
+
+
+
     angular.element(document).ready(function(){
 
     });
-    // $scope.getFileContent = function($event){
-    //     $event.currentTarget;
-    // }
+
     $scope.createFile = function(){
         alert($('#createFileName').val());
         $http({
@@ -211,5 +222,26 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
             });
         }
     }
+});
+
+// Controller directives
+ angular.module('brainfuckApp').directive('ngSelectionStart', function () {
+    return {
+        link: function (scope, elm, attrs) {
+            scope.$watch(attrs.ngSelectionStart, function (value) {
+                elm[0].selectionStart = parseInt(value) || 0;
+            }); 
+        }
+    };
+});
+
+ angular.module('brainfuckApp').directive('ngSelectionEnd', function () {
+    return {
+        link: function (scope, elm, attrs) {
+            scope.$watch(attrs.ngSelectionEnd, function (value) {
+                elm[0].selectionEnd = parseInt(value) || 0;
+            });
+        }
+    };
 });
 })();
