@@ -1,5 +1,29 @@
-#txt_status {
-	margin-left: 32px;
+.qwer {
+	background-color:  #6a6a72;
+}
+#run-status {
+	margin-top: 20px;
+}
+.memory-cell {
+	width: 150px;
+}
+.memory-cell-index {
+	width: 50%;
+	float: left;
+}
+.memory-cell-value {
+	width: 50%;
+	float: right;
+}
+.memory {
+	overflow-y: scroll;
+}
+.debug-main {
+	float: left;
+	margin-right: 40px;
+}
+.debug-memory {
+	float: right;
 }
 .navbar-header {
     float: left;
@@ -44,7 +68,6 @@ input[type=button] {
 	float: right !important;
 }
 .workspace {
-
 	float: left !important;
 }
 #debugger {
@@ -243,7 +266,7 @@ body {
 	height: 118px;
 	list-style-type: none;
 	margin: 10px;
-	display: inline-block;
+
 	position: relative;
 	overflow: hidden;
 	padding: 0.3em;
@@ -276,8 +299,10 @@ body {
 	display: inline-block;
 	position: absolute;
 	overflow: hidden;
-	text-overflow: ellipsis;
+	text-overflow: hidden;
 	top: 40px;
+	left:30px;
+
 }
 
 .filemanager .data li .details {

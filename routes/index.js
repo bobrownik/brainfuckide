@@ -34,29 +34,6 @@ module.exports = function(passport){
 		failureFlash : true
 	}));
 
-	router.post('/upload', fileParser, function(req, res){
-  		var imageFile = req.files.image;
-		cloudinary.uploader.upload(imageFile.path, function(result){
-    	if (result.url) {
-      		User.findOneAndUpdate({
-				username: req.user.username
-			}, {
-			$push: {
-				images: result.url
-			}
-			}, function(err, rslt) {
-			if (err) throw err;
-				cloudinary.api.resources(function(items){
-					res.render('ide', { user: req.user, images: items.resources, cloudinary: cloudinary });
-				});
-			});
-    	} else {
-      	console.log('Error uploading to cloudinary: ',result);
-      	res.send('did not get url');
-    	}
-	  	});
-	});
-
 	router.get('/ide', isAuthenticated, function(req, res, next){
 		res.render('ide', {user: req.user});
 	});
@@ -78,6 +55,77 @@ module.exports = function(passport){
 		req.logout();
 		res.redirect('/');
 	});
+
+	router.post('/createfile', isAuthenticated, function(req, res, next) {
+		console.log(req.body.name);
+		console.log(req.user.username);
+	 	var file = new File({
+	    	name: req.body.name,
+	    	content: ''
+	  	});
+	  	/*user.files.push(file);
+	  	user.save();*/
+	  	User.findOneAndUpdate({
+			username: req.user.username
+		}, {
+		$push: {
+			files: {
+				name: req.body.name,
+				content: ''
+			}
+		}
+		}, function(err, result) {
+		if (err) throw err;
+			res.send(result);
+		});
+	  	/*file.save(function(err) {
+	    	if (err) throw err;
+	    	user.files.push(file);
+	  	});*/
+	});
+
+	router.post('/refreshcontent', function(req, res) {
+  		file.findOneAndUpdate({
+	    	name: req.body.name
+	  	}, {
+	    $set: {
+      		content: req.body.content
+    	}
+	  	});
+	});
+
+	router.get('/filecontent', function(req, res) {
+	  	File.find({
+	      name: req.body.name
+	    },
+	    function(err, file) {
+	      if (err) {
+	        return res.status(500).send(err);
+	      }
+	      res.status(200).send(file.content);
+	    });
+	});
+
+	router.post('/renamefile', function(req, res) {
+  		file.findOneAndUpdate({
+	    	name: req.body.name
+	  	}, {
+	    $set: {
+      		name: req.body.name
+    	}
+	  	});
+	});
+	router.delete('/deletefile', function(req, res) {
+		File.findOne({name: req.body.name}, function(err, result){
+			File.remove({
+			    _id: result._id
+			  }, function(err) {
+			    var head = err ? 500 : 200,
+			      message = head == 500 ? 'Error' : 'OK';
+			    res.status(head).send(message);
+			  });
+			});
+		});
 
 	return router;
 }
