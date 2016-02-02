@@ -1,5 +1,6 @@
 
 $('.files > a').click(function(){
+    alert('click function');
     $('span.icon').removeClass('f-jpg').addClass('f-doc');
     $(this).children('.icon').addClass('f-jpg');
     $.ajax({
@@ -7,7 +8,8 @@ $('.files > a').click(function(){
         data: {name: $(this).text().replace(/\s+/g, '')},
         url: '/filecontent'
     }).done(function(response) {
-           $('#code').html(response);
+        console.log(JSON.stringify(response));
+           $('#code').html(response.content);
     });
     // $http({
     //     method: 'GET',

@@ -9,7 +9,7 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
         $scope.memory = new Array();
         $scope.memoryPointer = -1;
         $scope.codePointer = -1;
-        $scope.code = "++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.";
+        $scope.code = '';
         $scope.isDebuging = false;
         $scope.isRunning = false;
         $scope.atBereakPoint = false;
@@ -182,71 +182,73 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
     });
 
     $scope.createFile = function(){
-        alert($('#createFileName').val());
         $http({
                 method: 'POST',
                 data: {name: $('#createFileName').val()},
                 url: '/createfile'
             }).then(function successCallback(response) {
                 console.clear();
-                console.log();
+                console.log(response);
+                location.reload();
             }, function errorCallback(response) {
             });
     }
     $scope.saveFile = function(){
+        if($('.f-jpg').length) {
         $http({
                 method: 'POST',
-                data: {},
+                data: {name: $('.f-jpg').siblings('.name').text(), content: $('#code').text()},
                 url: '/savefile'
             }).then(function successCallback(response) {
                 console.clear();
-                alert(JSON.stringify(response));
+                console.log(JSON.stringify(response));
             }, function errorCallback(response) {
             });
+        }
     }
     $scope.renameFile = function(){
-        alert("old_name:" + $('.f-jpg').siblings('.name').text() + "\n" + $('#renameFileName').val());
         if($('.f-jpg').length) {
             $http({
                 method: 'POST',
-                data: {old_name: $('.f-jpg').siblings('.name').text() ,new_name: $('#renameFileName').val()},
-                url: '/savefile'
+                data: {oldname: $('.f-jpg').siblings('.name').text() ,newname: $('#renameFileName').val()},
+                url: '/renamefile'
             }).then(function successCallback(response) {
                 console.clear();
-                alert(JSON.stringify(response));
+                console.log(JSON.stringify(response));
+                location.reload();
             }, function errorCallback(response) {
             });
         }
     }
     $scope.deleteFile = function(){
         $http({
-            method: 'DELETE',
+            method: 'POST',
             data: {name: $('#deleteFileName').val()},
             url: '/deletefile'
-        }).t
-        hen(function successCallback(response) {
+        }).then(function successCallback(response) {
             console.clear();
-            console.log();
+            console.log(response);
+            location.reload();
         }, function errorCallback(response) {
         });
-
     }
     $scope.refresh = function(){
         location.reload();
     }
     $interval(callAtInterval, 10000);
     function callAtInterval() {
-        if($('.f-jpg').length) {
-            $http({
-                method: 'POST',
-                data: {name: $('.f-jpg').siblings('.name').text(), content: $('#code').val()},
-                url: '/refreshcontent'
-            }).then(function successCallback(response) {
-                console.clear();
-                console.log();
-            }, function errorCallback(response) {
-            });
-        }
+        // if($('.f-jpg').length) {
+        //     console.log('refreshcontent call');
+        //     $http({
+        //         method: 'POST',
+        //         data: {name: $('.f-jpg').siblings('.name').text(), content: $('#code').val()},
+        //         url: '/refreshcontent'
+        //     }).then(function successCallback(response) {
+        //         console.clear();
+        //         console.log();
+        //     }, function errorCallback(response) {
+        //     });
+        // }
     }
 });
 

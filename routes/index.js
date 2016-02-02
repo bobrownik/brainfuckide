@@ -37,23 +37,19 @@ module.exports = function(passport){
 	router.get('/ide', isAuthenticated, function(req, res, next){
 		File.find({username: req.user.username}, function(err, result){
 			if (err) throw err;
+			console.log(result);
 			res.render('ide', {user: req.user, files: result});
 		});
 	});
 
 	router.post('/saveFile', isAuthenticated, function(req, res){
-		// User.findOneAndUpdate({
-		// 	username: req.user.username
-		// }, {
-		// $set: {
-		// 	workflow: req.body.workflow
-		// }
-		// }, function(err, result) {
-		// if (err) throw err;
-		// 	res.send(result);
-		// });
-		File.find({username: req.user.username}, function(err, result){
-			if (err) throw err;
+		var file = new File({
+	    	name: req.body.name,
+	    	content: req.body.content,
+	    	username: req.user.username
+	  	});
+	  	file.save(function(err, result) {
+		if (err) throw err;
 			res.send(result);
 		});
 	});
@@ -76,41 +72,40 @@ module.exports = function(passport){
 	});
 
 	router.post('/refreshcontent', function(req, res) {
-  		file.findOneAndUpdate({
-	    	name: req.body.name
-	  	}, {
-	    $set: {
-      		content: req.body.content
-    	}
+  		File.findOne({username: req.user.username,	name: req.body.name}, function(err, file){
+  			file.content = req.body.content;
+  			file.save(function(err, result){
+  				if (err) throw err;
+  				res.send(result);
+  			});
 	  	});
 	});
 
 	router.get('/filecontent', function(req, res) {
-	  	File.find({
+	  	File.findOne({
+	  	  username: req.user.username,
 	      name: req.body.name
 	    },
-	    function(err, file) {
-	      if (err) {
-	        return res.status(500).send(err);
-	      }
-	      res.status(200).send(file.content);
+	    function(err, result) {
+	      if (err) throw err;
+	      res.send(result);
 	    });
 	});
 
 	router.post('/renamefile', function(req, res) {
-  		File.findOneAndUpdate({
-	    	name: req.body.name
-	  	}, {
-	    $set: {
-      		name: req.body.name
-    	}
+  		File.findOne({username: req.user.username,	name: req.body.oldname}, function(err, file){
+  			file.name = req.body.newname;
+  			file.save(function(err, result){
+  				if (err) throw err;
+  				res.send(result);
+  			});
 	  	});
 	});
-	router.delete('/deletefile', function(req, res) {
-		File.findOne({name: req.body.name}, function(err, result){
-			File.remove({
-			    _id: result._id
-			  }, function(err) {
+
+	router.post('/deletefile', function(req, res) {
+		console.log(req.body.name + "\n" + req.user.username);
+		File.findOne({name: req.body.name, username: req.user.username}, function(err, result){
+			result.remove(function(err) {
 			    var head = err ? 500 : 200,
 			      message = head == 500 ? 'Error' : 'OK';
 			    res.status(head).send(message);
