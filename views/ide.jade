@@ -61,10 +61,12 @@ block content
           textarea#code.light(ng-model='code', ng-trim='false', wrap='virtual', ng-selection-start='\
           codePointer', ng-selection-end='codePointer + 1', rows='20', cols='60')
           h4 Output:
-          textarea.dark(ng-model='output_text', wrap='virtual', readonly='', rows='4', cols='60')
+          textarea.dark(ng-model='output_text', wrap='virtual', readonly='', rows='4', cols='60')   
+          
           br
+          input(type='button', value='Clear Output', ng-click='output_text = "";')
           br
-          input(type='button', value='Run', ng-click='run()')
+          input(type='button', value='Run', ng-disabled='isRunning||isDebuging' ng-click='run()')
           h4 Help:
           h5
             | Use # to add a breakpoint.
@@ -75,9 +77,10 @@ block content
         #debugger
           .debug-main
             h4 Controls:
-            input#btn_run(type='button', value='Run to breakpoint', ng-click='run_to_breakpoint()')
-            input#btn_step(type='button', value='Step', ng-click='run_step()')
-            input#btn_kill(type='button', value='Kill', ng-click='reset()')
+            input#btn_run(type='button', value='Run to breakpoint', ng-disabled='isRunning' ng-click='run_to_breakpoint()')
+            input#btn_step(type='button', value='Step', ng-disabled='isRunning||(isDebuging&&!atBereakPoint)' ng-click='run_step()')
+            input#btn_kill(type='button', value='Kill', ng-disabled='isRunning||(isDebuging&&!atBereakPoint)' ng-click='reset()')
+            input#btn_stop(type='button', value='Stop', ng-disabled='!isDebuging||atBereakPoint' ng-click='atBereakPoint = true')
             h4 Run speed:
             .input-control.range.big-input
               input(type='range', min='10', max='1000', ng-model='pause_time')
