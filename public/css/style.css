@@ -15,7 +15,8 @@
 	width: 50%;
 	float: right;
 }
-.memory {
+#memory {
+	height: 500px;
 	overflow-y: scroll;
 }
 .debug-main {

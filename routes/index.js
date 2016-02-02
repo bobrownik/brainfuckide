@@ -2,6 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var fileParser = require('connect-multiparty')();
 var User = require('../models/user');
+var File = require('../models/file');
 var router = express.Router();
 
 var isAuthenticated = function (req, res, next) {
@@ -57,22 +58,15 @@ module.exports = function(passport){
 	});
 
 	router.post('/createfile', isAuthenticated, function(req, res, next) {
-		console.log(req.body.name);
-		console.log(req.user.username);
 	 	var file = new File({
 	    	name: req.body.name,
-	    	content: ''
+	    	content: '',
 	  	});
-	  	/*user.files.push(file);
-	  	user.save();*/
 	  	User.findOneAndUpdate({
 			username: req.user.username
 		}, {
 		$push: {
-			files: {
-				name: req.body.name,
-				content: ''
-			}
+			files: file
 		}
 		}, function(err, result) {
 		if (err) throw err;
