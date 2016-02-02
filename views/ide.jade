@@ -10,7 +10,7 @@ block content
       #dialog2.padding20.no-padding-right(data-role='dialog', data-close-button='true', data-width='350', data-height='200')
         h3 Rename File
         .input-control.text
-          input#createFileName.form-control(type='text', name='New File Name', placeholder='File Name')
+          input#renameFileName.form-control(type='text', name='New File Name', placeholder='File Name')
         button.button.success.block-shadow-success.text-shadow(ng-click='renameFile()')  Rename File
       #dialog3.padding20.no-padding-right(data-role='dialog', data-close-button='true', data-width='350', data-height='200')
         h3 Delete File
@@ -49,9 +49,11 @@ block content
         h3 Files:
         ul.data.animated
           li.files
-            a(href='', ng-click='getFileContent()')
-              span.icon.file.f-doc
-              span.name filename1
+            - for(var i = 0; i < files.length; ++i){
+                a(href='', ng-click='getFileContent()')
+                  span.icon.file.f-doc
+                  span.name #{files[i].name}
+            - }
         .nothingfound(style='display: none;')
           .nofiles
             span No files.
@@ -88,7 +90,7 @@ block content
               input#txt_status(type='text', disabled='', ng-if='isDebuging&&!atBereakPoint', value='Status: Debugging', size='14')
               input#txt_status(type='text', disabled='', ng-if='isDebuging&&atBereakPoint', value='Status: Debugging, paused', size='14')
           .debug-memory
-            #memory
+            #memory(data-role="scrollbox" data-scroll="vertical")
               h4 Memory state:
               .memory-cell(ng-repeat='cell in memory track by $index')
                 span.ind {{$index}} value:

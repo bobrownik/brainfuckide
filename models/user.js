@@ -6,8 +6,4 @@ module.exports = mongoose.model('User', {
   email: String,
   firstName: String,
   lastName: String,
-  files: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'File'
-  }]
 });

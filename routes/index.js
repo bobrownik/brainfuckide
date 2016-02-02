@@ -23,7 +23,6 @@ module.exports = function(passport){
 		failureFlash : true
 	}));
 
-
 	router.get('/signup', function(req, res){
 		res.render('register',{message: req.flash('message')});
 	});
@@ -36,18 +35,25 @@ module.exports = function(passport){
 	}));
 
 	router.get('/ide', isAuthenticated, function(req, res, next){
-		res.render('ide', {user: req.user});
+		File.find({username: req.user.username}, function(err, result){
+			if (err) throw err;
+			res.render('ide', {user: req.user, files: result});
+		});
 	});
 
-	router.post('/save', isAuthenticated, function(req, res){
-		User.findOneAndUpdate({
-			username: req.user.username
-		}, {
-		$set: {
-			workflow: req.body.workflow
-		}
-		}, function(err, result) {
-		if (err) throw err;
+	router.post('/saveFile', isAuthenticated, function(req, res){
+		// User.findOneAndUpdate({
+		// 	username: req.user.username
+		// }, {
+		// $set: {
+		// 	workflow: req.body.workflow
+		// }
+		// }, function(err, result) {
+		// if (err) throw err;
+		// 	res.send(result);
+		// });
+		File.find({username: req.user.username}, function(err, result){
+			if (err) throw err;
 			res.send(result);
 		});
 	});
@@ -61,21 +67,12 @@ module.exports = function(passport){
 	 	var file = new File({
 	    	name: req.body.name,
 	    	content: '',
+	    	username: req.user.username
 	  	});
-	  	User.findOneAndUpdate({
-			username: req.user.username
-		}, {
-		$push: {
-			files: file
-		}
-		}, function(err, result) {
+	  	file.save(function(err, result) {
 		if (err) throw err;
 			res.send(result);
 		});
-	  	/*file.save(function(err) {
-	    	if (err) throw err;
-	    	user.files.push(file);
-	  	});*/
 	});
 
 	router.post('/refreshcontent', function(req, res) {
@@ -101,7 +98,7 @@ module.exports = function(passport){
 	});
 
 	router.post('/renamefile', function(req, res) {
-  		file.findOneAndUpdate({
+  		File.findOneAndUpdate({
 	    	name: req.body.name
 	  	}, {
 	    $set: {

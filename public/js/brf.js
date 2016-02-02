@@ -132,7 +132,7 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
             if(this.isDebuging)
                 this.step();
         }
-        
+
         $scope.run_to_breakpoint = function(){
             if(!this.isRunning){
                 this.atBereakPoint=false;
@@ -192,6 +192,31 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
             }, function errorCallback(response) {
             });
     }
+    $scope.saveFile = function(){
+        $http({
+                method: 'POST',
+                data: {},
+                url: '/savefile'
+            }).then(function successCallback(response) {
+                console.clear();
+                alert(JSON.stringify(response));
+            }, function errorCallback(response) {
+            });
+    }
+    $scope.renameFile = function(){
+        alert("old_name:" + $('.f-jpg').siblings('.name').text() + "\n" + $('#renameFileName').val());
+        if($('.f-jpg').length) {
+            $http({
+                method: 'POST',
+                data: {old_name: $('.f-jpg').siblings('.name').text() ,new_name: $('#renameFileName').val()},
+                url: '/savefile'
+            }).then(function successCallback(response) {
+                console.clear();
+                alert(JSON.stringify(response));
+            }, function errorCallback(response) {
+            });
+        }
+    }
     $scope.deleteFile = function(){
         $http({
             method: 'DELETE',
@@ -230,7 +255,7 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
         link: function (scope, elm, attrs) {
             scope.$watch(attrs.ngSelectionStart, function (value) {
                 elm[0].selectionStart = parseInt(value) || 0;
-            }); 
+            });
         }
     };
 });
