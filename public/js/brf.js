@@ -96,7 +96,8 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
         }
 
         $scope.step = function() {
-            this.execute();
+            if(!this.code[this.codePointer].match(/\s/))
+                this.execute();
             this.codePointer+=1;
             if (!this.code[this.codePointer]) {
                 this.output_text += '\n---------------\n';
@@ -164,7 +165,8 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
             this.output_text+=String.fromCharCode(a);
         }
         $scope.debug_step = function(){
-            this.execute();
+            if(!this.code[this.codePointer].match(/\s/))
+                this.execute();
             this.codePointer+=1;
             if(this.code[this.codePointer]=='#') this.atBereakPoint = true;
             if(!this.code[this.codePointer]) {
@@ -220,6 +222,37 @@ angular.module('brainfuckApp').controller('brainfuckController', function($scope
             });
         }
     }
+    var scope1= $scope;
+    $('.files > a').click(function(scope1){
+        $('span.icon').removeClass('f-jpg').addClass('f-doc');
+        $(this).children('.icon').addClass('f-jpg');
+        $.ajax({
+            method: 'GET',
+            data: {name: $(this).text()},
+            url: '/filecontent',
+            success: function(response) {
+
+               $scope.code = response.content.replace(/\s{2,10}/g, ' ');
+                $scope.reset();
+           }
+        });
+    });
+
+
+    // $scope.selectFile = function($event){
+    //    $('span.icon').removeClass('f-jpg').addClass('f-doc');
+    //    var x = $('.files > a');
+    //    $event.target.children('.icon').addClass('f-jpg');
+    //     $.ajax({
+    //         method: 'GET',
+    //         data: {name: $(this).text()},
+    //         url: '/filecontent',
+    //         success: function(response) {
+    //            $scope.code = response.content.replace(/\s{2,10}/g, ' ');
+    //        }
+    //     });
+    // }
+
     $scope.deleteFile = function(){
         alert($('.f-jpg').siblings('.name').text());
         if($('.f-jpg').length) {

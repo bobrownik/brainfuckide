@@ -1,3 +1,9 @@
+input[type=password] {
+	margin: 5px;
+}
+input[type=email] {
+	margin: 5px;
+}
 input[type=button] {
 	margin: 5px;
 }
@@ -352,17 +358,16 @@ body {
 
 .filemanager .nothingfound {
 	background-color: #373743;
-	width: 23em;
-	height: 21em;
-	margin: 0 auto;
-	display: none;
+	width: 200px;
+	height: 400px;
+	margin: -50px auto;
 	font-family: Arial;
 	-webkit-animation: showSlowlyElement 700ms; /* Chrome, Safari, Opera */
 	animation: showSlowlyElement 700ms; /* Standard syntax */
 }
 
 .filemanager .nothingfound .nofiles {
-	margin: 30px auto;
+	margin: auto;
 	top: 3em;
 	border-radius: 50%;
 	position:relative;
@@ -381,14 +386,14 @@ body {
 }
 
 .filemanager .nothingfound span {
-	margin: 0 auto auto 6.8em;
+	margin: auto;
 	color: #ffffff;
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 20px;
 	height: 13px;
 	position: relative;
-	top: 2em;
+	top: 50px;
 }
 
 @media all and (max-width:965px) {

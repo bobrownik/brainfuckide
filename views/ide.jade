@@ -43,14 +43,15 @@ block content
       .filemanager
         h3 Files:
         ul.data.animated
-          - if(files && files.length)
+          - if(files && files.length){
           - for(var i = 0; i < files.length; ++i){
             li.files
-              a(href='', ng-click='getFileContent()')
+              a(href='')
                 span.icon.file.f-doc
                 span.name #{files[i].name}
           - }
-        .nothingfound(style='display: none;')
+          - }
+        .nothingfound(style="display: none;")
           .nofiles
             span No files.
       .page
